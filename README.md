@@ -44,7 +44,7 @@ Spyder is the development tool that will be used to run the power monitoring cod
 
 #### Step Three: Download PicoScope Python Wrappers
 
-##### For Event-based stimulations (ie. for monitoring short burst of signal)
+##### For Event-based stimulations (or for monitoring short burst of signal)
 
 1. Navigate to the pico-python github repository
 2. Using the green "Code" button, select "Download Zip"
@@ -55,7 +55,7 @@ cd C:\Users\username\Miniconda3\envs\powerMonitoring\pico-python-master
 pip install picoscope
 ```
 
-##### For 40-second pulsed burst FUS stimulations (ie. for monitoring longer signals than can be monitored by Event-based script)
+##### For 40-second pulsed burst FUS stimulations (or for signals that are too long to be monitored by the Event-based script)
 
 1. Navigate to the picosdk-python-wrappers github repository
 2. Using the green "Code" button, select "Download Zip"
