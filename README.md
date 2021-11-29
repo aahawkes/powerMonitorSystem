@@ -15,7 +15,7 @@ To run this system, only two hardware components and the associated software are
 (*Note: this setup is for the 40-second and event-based stimulations for which this system was designed*) 
 
 ### 1.2 Software Setup
-This system is run by our Python program that controls the PicoScope® oscilloscope for power monitoring. We developed our code by using the python wrappers for the API Functions provided by the ps5000a driver in standard C format. These wrappers are available as GitHub repositories: [picosdk-python-wrappers](https://github.com/picotech/picosdk-python-wrappers) by PicoTech and [pico-python](https://github.com/colinoflynn/pico-python) by Colin O'Flynn. For 40-second pulsed burst stimulations, the picosdk-python-wrappers repository was utilized; for event-based stimulations, the pico-python repository was utilized. Although the repositories are both written for the same API driver, some of the software setup is different; these differences will be clearly noted. (*Different wrappers were used because of limitations within each library that prevented us from using one or the other on for monitoring both types of FUS stimulations.*)
+This system is run by our Python program that controls the PicoScope® oscilloscope for power monitoring. We developed our code by using python wrappers for the API Functions provided by the ps5000a driver in standard C format. These wrappers are available as GitHub repositories: [picosdk-python-wrappers](https://github.com/picotech/picosdk-python-wrappers) by PicoTech and [pico-python](https://github.com/colinoflynn/pico-python) by Colin O'Flynn. For 40-second pulsed burst stimulations, the picosdk-python-wrappers repository was utilized; for event-based stimulations, the pico-python repository was utilized. Although the repositories are both written for the same API driver, some of the software setup is different; these differences will be clearly noted. (*Different wrappers were used because of limitations within each library that prevented us from using one or the other on for monitoring both types of FUS stimulations.*)
 
 #### Step One: PicoScope Setup
 
@@ -36,14 +36,38 @@ conda activate powerMonitoring
 
 From within the activated environment, download each of the necessary packages: Spyder, Numpy, Scipy. 
 ```
-conda install -c conda-forge jupyterlab
+conda install -c anaconda spyderconda 
 conda install numpy
 conda install scipy
 ```
+Spyder is the development tool that will be used to run the power monitoring code.
 
 #### Step Three: Download PicoScope Python Wrappers
 
-**For 40-second pulsed burst FUS stimulations (ie. for continuously collecting data for over 5 seconds at a high sampling rate)**
+**For Event-based stimulations (ie. for monitoring short burst of signal)**
 
+1. Navigate to the pico-python github repository
+2. Using the green "Code" button, select "Download Zip"
+3. Unzip folder to C:\Users\ **username** \Miniconda3\envs\powerMonitoring (substituting **username**)
+4. Open miniconda and type the following
+```
+cd C:\Users\username\Miniconda3\envs\powerMonitoring\pico-python-master
+pip install picoscope
+```
 
+**For 40-second pulsed burst FUS stimulations (ie. for monitoring longer signals than can be monitored by Event-based script)**
+
+1. Navigate to the picosdk-python-wrappers github repository
+2. Using the green "Code" button, select "Download Zip"
+3. Unzip folder to C:\Users\ **username** \Miniconda3\envs\powerMonitoring (substituting **username**)
+4. Navigate to the folder C:\Users\username\Miniconda3\envs\powerMonitor\picosdk-python-wrappers-master
+5. Open the file *setup.py*. Comment out lines 17 through 22. Change line 16 to read:
+```
+    name = 'ps5000'
+```
+7. Open miniconda and type the following
+```
+cd C:\Users\username\Miniconda3\envs\powerMonitor\picosdk-python-wrappers-master
+python setup.py install
+```
 
