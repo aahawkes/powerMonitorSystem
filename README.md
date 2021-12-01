@@ -44,7 +44,7 @@ Spyder is the development tool that will be used to run the power monitoring cod
 
 #### Step Three: Download PicoScope Python Wrappers
 
-##### For Event-based stimulations (or for monitoring short burst of signal)
+##### For Event-based stimulation monitoring
 
 1. Navigate to the pico-python github repository
 2. Using the green "Code" button, select "Download Zip"
@@ -55,7 +55,7 @@ cd C:\Users\username\Miniconda3\envs\powerMonitoring\pico-python-master
 pip install picoscope
 ```
 
-##### For 40-second pulsed burst FUS stimulations (or for signals that are too long to be monitored by the Event-based script)
+##### For 40-second pulsed burst FUS stimulation monitoring
 
 1. Navigate to the picosdk-python-wrappers github repository
 2. Using the green "Code" button, select "Download Zip"
@@ -80,8 +80,58 @@ Sometimes when installing the Python wrappers from the above GitHub repositories
 
 # 2. Running the System
 
-## 2.1 How to Run
+### 2.1 How it Works
+
+##### Event-based stimulation power monitoring
+The **eventBasedTUSPowerMonitor.py** script was designed to monitor short signals at a high sampling rate. When the script runs, it waits to receive a trigger from the waveform generator, samples the signal once triggered, computes a root-mean-square average and stores this value. The script then pauses and waits for another trigger. When another trigger is received, the script repeats the process, overwriting the raw signal data and compiling the newly computed averages for each trigger. This can be repeated indefintely until the user presses the red square in the console window. Once the loop is exited, the script will save all computed values (described below) and timestamps to a file in the pico-python-master folder. While it is possible to monitor a signal different from the one defined here, this monitoring mehtod is limited by the amount of available storage on the PicoScope. For ultrasound pulses that are longer or that require higher sampling rates, there will be a point at which the system will not longer be able to record data and compute the average. If there is an error with the storage , the **TUSPowerMonitor.py** script should be used.
+
+##### Long, pulsed stimulation power monitoring
+The **TUSPowerMonitor.py** script was designed to monitor longer signals at a high sampling rate, but lower than the above script. When the script runs, it waits to receive a trigger from the waveform generator, samples the signal once triggered, computes a root-mean-square average and stores this value. The script will wait for 1 more trigger, repeat the process, overwriting the raw signal data, compile and save all computed values (described below) and timestamps to a file in the picosdk-python-wrappers-master folder. As above, it is possible to monitor a signal different from the one defined here, but it will be limited by the PicoScope's storage capacity. For ultrasound pulses that are longer or require higher sampling rates, there will be a point at which the system will not longer be able to record data and compute the average. Our system has not be developed to monitor signals that exceed these boundaries.
+
+### 2.1 How to Run & System Inputs
 
 ##### For Event-based stimulations 
 
-Download the code for 
+1. Download the file **eventBasedTUSPowerMonitor.py**
+2. Open eventBasedTUSPowerMonitor.py script
+3. Update line 5 of the script to match the following path with correct username 
+```
+os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-master")
+```
+4. Update line 19 to read the desired output Peak Negative Pressure of the ultrasound transducer
+5. Lines 23-24, 54-55 will need to be updated every time the ultrasound transducer is recalibrated. *Steps on this process will be provided at the end of these instructions.*
+6. Lines 30-46 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 300 millisecond pulse at 250 kHz with a pulse repitition frequency of 1500Hz and a duty cycle of 50%. The amplitude is determined by the calibrated values and reported to the user prior at the beginning of the script. The sampling frequency has been set to 5MHz, an appropiate sampling rate for this signal that produces a manageable amount data points for the PicoScope.**
+7. Press the Green Play Button at the top of the script
+
+*if attempting to monitor a different signal, enter the characteristics of the signal into script as they apppear on the waveform generator and the desired sampling rate that can be supported by the PicoScope.* 
+
+##### For Event-based stimulations 
+
+1. Download the file **eventBasedTUSPowerMonitor.py**
+2. Open eventBasedTUSPowerMonitor.py script
+3. Update line 5 of the script to match the following path with correct username 
+```
+os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-master")
+```
+4. Update line 19 to read the desired output Peak Negative Pressure of the ultrasound transducer
+5. Lines 23-24, 54-55 will need to be updated every time the ultrasound transducer is recalibrated. *Steps on this process will be provided at the end of these instructions.*
+6. Lines 30-46 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 300 millisecond pulse at 250 kHz with a pulse repitition frequency of 1500Hz and a duty cycle of 50%. The amplitude is determined by the calibrated values and reported to the user prior at the beginning of the script. The sampling frequency has been set to 5MHz, an appropiate sampling rate for this signal that produces a manageable amount data points for the PicoScope.**
+7. Press the Green Play Button at the top of the script
+
+*if attempting to monitor a different signal, enter the characteristics of the signal into script as they apppear on the waveform generator and the desired sampling rate that can be supported by the PicoScope.* 
+
+c.	In the console, three values will be printed:
+i.	The correct input voltage to use on the AWG to get the desired pressure
+ii.	The expected RMS voltage forward
+iii.	The expected RMS voltage reverse
+d.	The script will wait until it receives a trigger
+e.	It will collect data for 300 ms and then pause and wait for another trigger
+f.	This will repeat an infinite number of times
+g.	With each trigger and recording, the script will print two values in the console:
+i.	The expected RMS voltage forward
+ii.	The expected RMS voltage reverse
+h.	Once you have sent/received all the triggers you wish to gather, press the red stop button on the console
+i.	All the expected and recorded values will be saved to a file with a timestamp in the pico-python-master folder
+
+
+#### consider including "system that gives comparison values" "standard of comparison" "way to compute values and know that your system is working correctly". Consider wording the two options differently (short and long, repeated indefinitely, limited long recordings) and then specify that ours worked for these two specific types of FUS stimulations)
