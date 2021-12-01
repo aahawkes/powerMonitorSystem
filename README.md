@@ -127,7 +127,7 @@ For both scripts, there are be 3 types of outputs generated in the console windo
 
 At the end of both scripts, an Excel file is saved containing the expected forward and reverse RMS voltages, expected peak voltage, computed forward and reverse RMS voltages, computed peak voltages, and the corresponding timestamps. There should be as many forward and reverse RMS voltages and peak voltages as there are events/triggers when using **shortPowerMonitor.py**. There should be (40 * # of runs) of forward and reverse RMS voltages and peak voltages when using **longPowerMonitor.py**. 
 
-## 3. Calibrating the Transducer & Inputing These Values into the System
+## 3. Calibrating to Update System Inputs
 
 There are 4 inputs that will change if the transducer used in the experiment is recalibrated prior to the experiment. To determine these inputs, the calibration first has to be completed. The following steps will walk through the calibration process. To establish this calibration process, we used the **blank** hydrophone and in a water bath with our single-element focused ultrasound transducer.
 
