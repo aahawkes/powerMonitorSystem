@@ -97,8 +97,8 @@ The **longPowerMonitor.py** script was designed to monitor longer signals at a h
 ```
 os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-master")
 ```
-4. Update line 19 to read the desired output peak-negative-pressure (PNP) of the ultrasound transducer (how to obtain this value is described in Section 3).
-5. Lines 23-24, 54-55 will need to be updated every time the ultrasound transducer is recalibrated (steps on this process listed in Section 3).
+4. Update line 19 to read the desired output peak-negative-pressure (PNP) of the ultrasound transducer.
+5. Lines 23, 54-55 will need to be updated every time the ultrasound transducer is recalibrated (steps on this process listed in Section 3).
 6. Lines 30-46 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 300 millisecond pulse at 250 kHz with a pulse repitition frequency of 1500Hz and a duty cycle of 50%. The sampling frequency has been set to 5MHz, an appropiate sampling rate for this signal that produces a manageable amount data points for the PicoScope.**
 7. Press the Green Play Button at the top of the script
 
@@ -109,8 +109,8 @@ os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-mast
 ```
 os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-master")
 ```
-4. Update line 14 to read the desired output PNP of the ultrasound transducer (how to obtain this value is described in Section 3).
-5. Lines 18-19, 51-52 will need to be updated every time the ultrasound transducer is recalibrated (steps on this process listed in Section 3).
+4. Update line 14 to read the desired output PNP of the ultrasound transducer.
+5. Lines 18, 51-52 will need to be updated every time the ultrasound transducer is recalibrated (steps on this process listed in Section 3).
 6. Lines 25-45 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 40 second signal of 250 kHz with a pulse repitition frequency of 10Hz and a duty cycle of 30%. The sampling frequency has been set to 1.5MHz.**
 7. Press the Green Play Button at the top of the script
 
@@ -121,9 +121,9 @@ os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-mast
 ##### For monitoring both shorter and longer stimulations
 
 For both scripts, there are be 3 types of outputs generated in the console window. These outputs will inform the user on amplitude input, expected power output averages for the characterized ultrasound pulse sequence, and averages of the power actually delivered to the ultrasound transducer.
-1. Input voltage: the script will tell the user what amplitude should be input to the waveform generator in order to obtain the desired output pressure for the transducer being used. This value is computed from the user-input for desired PNP. To compute the target peak negative pressure and to obtain the correct equation for input voltage for this system, follow the steps listed in Section 3. 
-2. Expected forward and reverse root-mean-square (RMS) voltage: the way that this system reports power delivered to the transducer is through a computed average. These are the target values for power delivery, and are computed using two equations obtained in the calibration steps (Section 3). The system reports the power delivered in two values - forward and reverse voltages. These values are correspond to the two channels on the coupler that are connected to the PicoScope. The forward coupled channel reads the signal sent to the transducer, the reverse coupled channels reads the signal reflected by the transducer.
-3. Foward and reverse RMS voltage: these are the power delivery averages for the signal that is actually delivered to the transducer. The system reads the signal from the coupler (the forward and reverse channels) and computes and reports the RMS voltage. For shorter pulses, the RMS voltage is computed from the entire burst. These two output voltage averages will be reported for every trigger received by the script. For longer pulses, the RMS voltage is computed from every 1 second of data acquired. These two output voltage averages will be reported every second. As described above, power monitoring for longer pulses has been set to run twice, as set in line 77. 
+1. **Input voltage:** the script will tell the user what amplitude should be input to the waveform generator in order to obtain the desired output pressure for the transducer being used. This value is computed from the user-input for desired PNP. To obtain the correct equation for input voltage for this system, follow the steps listed in Section 3. 
+2. **Expected forward and reverse root-mean-square (RMS) voltage:** the way that this system reports power delivered to the transducer is through a computed average. These are the target values for power delivery, and are computed using two equations obtained in the calibration steps (Section 3). The system reports the power delivered in two values - forward and reverse voltages. These values are correspond to the two channels on the coupler that are connected to the PicoScope. The forward coupled channel reads the signal sent to the transducer, the reverse coupled channels reads the signal reflected by the transducer.
+3. **Foward and reverse RMS voltage:** these are the power delivery averages for the signal that is actually delivered to the transducer. The system reads the signal from the coupler (the forward and reverse channels) and computes and reports the RMS voltage. For shorter pulses, the RMS voltage is computed from the entire burst. These two output voltage averages will be reported for every trigger received by the script. For longer pulses, the RMS voltage is computed from every 1 second of data acquired. These two output voltage averages will be reported every second. As described above, power monitoring for longer pulses has been set to run twice, as set in line 77. 
 
 Once each script is exited, an Excel file is saved containing the expected forward and reverse RMS voltages, expected peak voltage, computed forward and reverse RMS voltages, computed peak voltages, and the corresponding timestamps. There should be as many forward and reverse RMS voltages and peak voltages as there are events/triggers when using **shortPowerMonitor.py**. There should be (40 * # of runs) of forward and reverse RMS voltages and peak voltages when using **longPowerMonitor.py**. 
 
@@ -131,24 +131,23 @@ Once each script is exited, an Excel file is saved containing the expected forwa
 
 There are 4 inputs that will change if the transducer used in the experiment is recalibrated prior to the experiment. To determine these inputs, the calibration first has to be completed. The following steps will walk through the calibration process. To establish this calibration process, we used the **blank** hydrophone and in a water bath with our single-element focused ultrasound transducer.
 
-1. Download the **FUS_Calibration.xlsx** file. 
+1. Download the **FUS_Calibration.xlsx** file.
 2. Leave the PicoScope and bi-directional coupler set up as they were.
 3. Set up the hydrophone with the transducer in a waterbath.
 4. Detach the reverse port of the coupler from Channel B on the PicoScope.
-5. Attach the output of the hydrophone to Channel B. The forward port of the coupler shoul still be attached to Channel B.
+5. Attach the output of the hydrophone to Channel B. The forward port of the coupler should still be attached to Channel A.
 6. Open the PicoScope 6 software previously downloaded & find the focal point of the transducer.
-7. Open the Excel file and navigate to the tab "Run with Coupler"
+7. Open the Excel file and navigate to the tab "Run with Coupler".
+8. Update the value in **J1** to the correct volts to pressure conversion factor for the hydrophone and frequency being used.
+9. Update the value in **J4** to the correct frequency being used.
+10. Set the waveform generator to 10 mVpp and record the peak voltage outputs on Channal A and Channel B on the Excel sheet under "Vcpl_fwd (mV)" and "Vout (mV)" respectively.
+11. Measure forward coupled voltage and hydrophone output voltage for all input voltages listed under "Vin (mVpp)". Note that while the input voltage is in mV peak-peak, all other voltage measurements are in mV.
+12. Detach the forward port of the coupler from Channel A on the PicoScope and attach the reverse port of the coupler to Channel A.
+13. Repeat steps 8-9, but this time only record the peak voltage output on Channel A on the Excel sheet under "Vcpl_rvs (mV)".
+14. Once these output voltages have been recorded, the 3 plots should update automatically. Each plot should have a line of best fit that also updates.
+15. Use the equation from the *Vin vs PNP* plot to update line 23 in **shortPowerMonitor.py** and line 18 in **longPowerMonitor.py**. This will make sure the user is given the correct input voltage necessary to reach the target PNP from the transducer.
+16. Use the equation from the *Vcpl_fwd vs Vin* plot to update line 54 in **shortPowerMonitor.py** and line 51 in **longPowerMonitor.py**. This will make make sure the user is provided an accurate expected foward coupled RMS voltage for comparison.
+17. Use the equation from the *Vcpl_rvs vs Vin* plot to update line 55 in **shortPowerMonitor.py** and line 52 in **longPowerMonitor.py**. This will make make sure the user is provided an accurate expected reverse coupled RMS voltage for comparison.
+18. Close PicoScope 6 (the power monitoring system cannot run if the PicoScope is open in another program).
+19. Re-attach the bi-directional coupler with the forward port to Channel A and the reverse port to Channel B on the PicoScope.
 
-Set the waveform generator to 10 mVpp and record the peak voltage outputs read on Channal A and Channel B. Channel A corresponds to column under Vcouple and Channel B corresponds to column under Vout.
-Fill in the corresponding values for Vcouple and Vout in the Excel sheet. Note that while the input voltage is in mV peak-peak, Vcouple and Vout are in mV-peak.
-Record these outputs for all input voltages (10 mVpp - 90 mVpp) in the sheet.
-Once these output voltages have been recorded, the 3 plots should update automatically. Each plot should have a line of best fit that also updates.
-There is also a value, “Average Amp”, the average computed total amplification of the system, that will update automatically.
-Temporarily remove the bi-directional coupler from the hardware system setup and attach the amplifier directly to the tranducer. There will only be one channel recording the signal now, Channel B.
-In Excel, navigate to the “Run without coupler” sheet.
-Set the waveform generator to 10 mVpp and fill in the corresponding value for Vout in the Excel sheet. Be sure to record Vout in mV-peak.
-Record these outputs for all input voltages (10 mVpp - 90 mVpp) in the sheet.
-Compare both sets of data for Vout (with and without the coupler) to ensure they follow the desired trends.
-As mentioned in steps 7 and 8, there will be newly updated plots and values. Enter the newlpy updated Average Amp value and the values from each line of best fit into PowerMonitoring_Run1_Final and PowerMonitoring_Run2_Final as directed by the comments in the lines shown below.
-
-Once these values in both scripts, PowerMonitoring_Run1_Final and PowerMonitoring_Run2_Final,  have been updated, close PicoScope 6 and Excel and be sure that the bi-directional coupler is re-attached in the system setup.
