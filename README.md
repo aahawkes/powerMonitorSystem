@@ -70,4 +70,18 @@ pip install picoscope
 cd C:\Users\username\Miniconda3\envs\powerMonitor\picosdk-python-wrappers-master
 python setup.py install
 ```
+#### Step Four: Make sure PATH variables are set up correctly
 
+Sometimes when installing the Python wrappers from the above GitHub repositories, the PATH environment variables need to be re-ordered. This simply means the path the correct directory needs to be clarified in the system. This will allow the power monitoring software to run. Follow the steps below to edit the PATH environment variable (these instructions are for a Microsoft Windows operating system, if there is an error in running the code that reads " ***insert Error message*** ", similarily edit the PATH envinronment variable for the operating system being used.
+1. Open the Control Panel
+2. Select: System and Security > System > Advanced system settings > Environment Variables
+3. Under "System Variables" select the line that reads "Path" and contains a value relating to the Pico Technology SDK lib > Edit
+4. Select the path variable to the SDK library and move it to the top of the list > Save
+
+# 2. Running the System
+
+## 2.1 How to Run
+
+##### For Event-based stimulations 
+
+Download the code for 
