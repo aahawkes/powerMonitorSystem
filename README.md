@@ -83,12 +83,12 @@ Sometimes when installing the Python wrappers from the above GitHub repositories
 ### 2.1 How it Works
 
 ##### Monitoring shorter stimulations
-The **shortPowerMonitor.py** script was designed to monitor short signals at a high sampling rate. When the script runs, it waits to receive a trigger from the waveform generator, samples the signal once triggered, computes a root-mean-square average and stores this value. The script then pauses and waits for another trigger. When another trigger is received, the script repeats the process, overwriting the raw signal data and compiling the newly computed averages for each trigger. This can be repeated indefintely until the user presses the red square in the console window. Once the loop is exited, the script will save all computed values (described below) and timestamps to a file in the pico-python-master folder. While it is possible to monitor a signal different from the one defined here, this monitoring mehtod is limited by the amount of available storage on the PicoScope. For ultrasound pulses that are longer or that require higher sampling rates, there will be a point at which the system will not longer be able to record data and compute the average. If there is an error with the storage , the **longPowerMonitor.py** script should be used.
+The **shortPowerMonitor.py** script was designed to monitor short signals at a high sampling rate. When the script runs, it waits to receive a trigger from the waveform generator, samples the signal once triggered, computes a root-mean-square average and stores this value. The script then pauses and waits for another trigger. When another trigger is received, the script repeats the process, overwriting the raw signal data and compiling the newly computed averages for each trigger. This can be repeated indefintely until the user presses the red square in the console window. Once the loop is exited, the script will save all computed values (described in Section 2.3) and timestamps to a file in the pico-python-master folder. While it is possible to monitor a signal different from the one defined here, this monitoring mehtod is limited by the amount of available storage on the PicoScope. For ultrasound pulses that are longer or that require higher sampling rates, there will be a point at which the system will not longer be able to record data and compute the average. If there is an error with the storage , the **longPowerMonitor.py** script should be used.
 
 ##### Monitoring longer stimulations
-The **longPowerMonitor.py** script was designed to monitor longer signals at a high sampling rate, but lower than the above script. When the script runs, it waits to receive a trigger from the waveform generator, samples the signal once triggered, computes a root-mean-square average and stores this value. The script will wait for 1 more trigger, repeat the process, overwriting the raw signal data, compile and save all computed values (described below) and timestamps to a file in the picosdk-python-wrappers-master folder. As above, it is possible to monitor a signal different from the one defined here, but it will be limited by the PicoScope's storage capacity. For ultrasound pulses that are longer or require higher sampling rates, there will be a point at which the system will not longer be able to record data and compute the average. Our system has not be developed to monitor signals that exceed these boundaries.
+The **longPowerMonitor.py** script was designed to monitor longer signals at a high sampling rate, but lower than the above script. When the script runs, it waits to receive a trigger from the waveform generator, samples the signal once triggered, computes a root-mean-square average and stores this value. The script will wait for 1 more trigger, repeat the process, overwriting the raw signal data, compile and save all computed values (described in Section 2.3) and timestamps to a file in the picosdk-python-wrappers-master folder. As above, it is possible to monitor a signal different from the one defined here, but it will be limited by the PicoScope's storage capacity. For ultrasound pulses that are longer or require higher sampling rates, there will be a point at which the system will not longer be able to record data and compute the average. Our system has not be developed to monitor signals that exceed these boundaries.
 
-### 2.1 How to Run & System Inputs
+### 2.2 How to Run & System Inputs
 
 ##### Monitoring shorter stimulations
 1. Download the file **shortPowerMonitor.py**
@@ -97,9 +97,9 @@ The **longPowerMonitor.py** script was designed to monitor longer signals at a h
 ```
 os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-master")
 ```
-4. Update line 19 to read the desired output Peak Negative Pressure of the ultrasound transducer. This will inform the user on what amplitude signal the generator will output.
-5. Lines 23-24, 54-55 will need to be updated every time the ultrasound transducer is recalibrated. *Steps on this process will be provided at the end of these instructions.*
-6. Lines 30-46 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 300 millisecond pulse at 250 kHz with a pulse repitition frequency of 1500Hz and a duty cycle of 50%. The amplitude is determined by the calibrated values and reported to the user prior at the beginning of the script. The sampling frequency has been set to 5MHz, an appropiate sampling rate for this signal that produces a manageable amount data points for the PicoScope.**
+4. Update line 19 to read the desired output peak-negative-pressure (PNP) of the ultrasound transducer (how to obtain this value is described in Section 3).
+5. Lines 23-24, 54-55 will need to be updated every time the ultrasound transducer is recalibrated (steps on this process listed in Section 3).
+6. Lines 30-46 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 300 millisecond pulse at 250 kHz with a pulse repitition frequency of 1500Hz and a duty cycle of 50%. The sampling frequency has been set to 5MHz, an appropiate sampling rate for this signal that produces a manageable amount data points for the PicoScope.**
 7. Press the Green Play Button at the top of the script
 
 ##### Monitoring longer stimulations
@@ -109,28 +109,46 @@ os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-mast
 ```
 os.chdir(r"C:\Users\username\Miniconda3\envs\power_monitor_test\pico-python-master")
 ```
-4. Update line 14 to read the desired output Peak Negative Pressure of the ultrasound transducer. This will inform the user on what amplitude signal the generator will output.
-5. Lines 18-19, 51-52 will need to be updated every time the ultrasound transducer is recalibrated. *Steps on this process will be provided at the end of these instructions.*
+4. Update line 14 to read the desired output PNP of the ultrasound transducer (how to obtain this value is described in Section 3).
+5. Lines 18-19, 51-52 will need to be updated every time the ultrasound transducer is recalibrated (steps on this process listed in Section 3).
 6. Lines 25-45 are the system variables that describe the ultrasound pulse sequence and match the inputs on the connected waveform generator. The variables provided in this script characterize a 40 second signal of 250 kHz with a pulse repitition frequency of 10Hz and a duty cycle of 30%. The sampling frequency has been set to 1.5MHz.**
 7. Press the Green Play Button at the top of the script
 
-*if attempting to monitor a different signal than either of the above signals, choose the appropriate script based on previously described system boundaries, and enter the characteristics of the signal into script as they apppear on the waveform generator and the desired sampling rate that can be supported by the PicoScope.* 
+** *if attempting to monitor a different signal than either of the above signals, choose the appropriate script based on previously described system boundaries, and enter the characteristics of the signal into script as they apppear on the waveform generator and the desired sampling rate that can be supported by the PicoScope.* 
 
-##### 2.3 System Outputs
+### 2.3 System Outputs
 
 ##### For monitoring both shorter and longer stimulations
 
-c.	In the console, three values will be printed:
-i.	The correct input voltage to use on the AWG to get the desired pressure
-ii.	The expected RMS voltage forward
-iii.	The expected RMS voltage reverse
-d.	The script will wait until it receives a trigger
-e.	It will collect data for 300 ms and then pause and wait for another trigger
-f.	This will repeat an infinite number of times
-g.	With each trigger and recording, the script will print two values in the console:
-i.	The expected RMS voltage forward
-ii.	The expected RMS voltage reverse
-h.	Once you have sent/received all the triggers you wish to gather, press the red stop button on the console
-i.	All the expected and recorded values will be saved to a file with a timestamp in the pico-python-master folder
+For both scripts, there are be 3 types of outputs generated in the console window. These outputs will inform the user on amplitude input, expected power output averages for the characterized ultrasound pulse sequence, and averages of the power actually delivered to the ultrasound transducer.
+1. Input voltage: the script will tell the user what amplitude should be input to the waveform generator in order to obtain the desired output pressure for the transducer being used. This value is computed from the user-input for desired PNP. To compute the target peak negative pressure and to obtain the correct equation for input voltage for this system, follow the steps listed in Section 3. 
+2. Expected forward and reverse root-mean-square (RMS) voltage: the way that this system reports power delivered to the transducer is through a computed average. These are the target values for power delivery, and are computed using two equations obtained in the calibration steps (Section 3). The system reports the power delivered in two values - forward and reverse voltages. These values are correspond to the two channels on the coupler that are connected to the PicoScope. The forward coupled channel reads the signal sent to the transducer, the reverse coupled channels reads the signal reflected by the transducer.
+3. Foward and reverse RMS voltage: these are the power delivery averages for the signal that is actually delivered to the transducer. The system reads the signal from the coupler (the forward and reverse channels) and computes and reports the RMS voltage. For shorter pulses, the RMS voltage is computed from the entire burst. These two output voltage averages will be reported for every trigger received by the script. For longer pulses, the RMS voltage is computed from every 1 second of data acquired. These two output voltage averages will be reported every second. As described above, power monitoring for longer pulses has been set to run twice, as set in line 77. 
+
+Once each script is exited, an Excel file is saved containing the expected forward and reverse RMS voltages, expected peak voltage, computed forward and reverse RMS voltages, computed peak voltages, and the corresponding timestamps. There should be as many forward and reverse RMS voltages and peak voltages as there are events/triggers when using **shortPowerMonitor.py**. There should be (40 * # of runs) of forward and reverse RMS voltages and peak voltages when using **longPowerMonitor.py**. 
 
 ## 3. Calibrating the Transducer & Inputing These Values into the System
+
+There are 4 inputs that will change if the transducer used in the experiment is recalibrated prior to the experiment. To determine these inputs, the calibration first has to be completed. The following steps will walk through the calibration process. To establish this calibration process, we used the **blank** hydrophone and in a water bath with our single-element focused ultrasound transducer.
+
+1. Download the **FUS_Calibration.xlsx** file. 
+2. Leave the PicoScope and bi-directional coupler set up as they were.
+3. Set up the hydrophone with the transducer in a waterbath.
+4. Detach the reverse port of the coupler from Channel B on the PicoScope.
+5. Attach the output of the hydrophone to Channel B. The forward port of the coupler shoul still be attached to Channel B.
+6. Open the PicoScope 6 software previously downloaded & find the focal point of the transducer.
+7. Open the Excel file and navigate to the tab "Run with Coupler"
+
+Set the waveform generator to 10 mVpp and record the peak voltage outputs read on Channal A and Channel B. Channel A corresponds to column under Vcouple and Channel B corresponds to column under Vout.
+Fill in the corresponding values for Vcouple and Vout in the Excel sheet. Note that while the input voltage is in mV peak-peak, Vcouple and Vout are in mV-peak.
+Record these outputs for all input voltages (10 mVpp - 90 mVpp) in the sheet.
+Once these output voltages have been recorded, the 3 plots should update automatically. Each plot should have a line of best fit that also updates.
+There is also a value, “Average Amp”, the average computed total amplification of the system, that will update automatically.
+Temporarily remove the bi-directional coupler from the hardware system setup and attach the amplifier directly to the tranducer. There will only be one channel recording the signal now, Channel B.
+In Excel, navigate to the “Run without coupler” sheet.
+Set the waveform generator to 10 mVpp and fill in the corresponding value for Vout in the Excel sheet. Be sure to record Vout in mV-peak.
+Record these outputs for all input voltages (10 mVpp - 90 mVpp) in the sheet.
+Compare both sets of data for Vout (with and without the coupler) to ensure they follow the desired trends.
+As mentioned in steps 7 and 8, there will be newly updated plots and values. Enter the newlpy updated Average Amp value and the values from each line of best fit into PowerMonitoring_Run1_Final and PowerMonitoring_Run2_Final as directed by the comments in the lines shown below.
+
+Once these values in both scripts, PowerMonitoring_Run1_Final and PowerMonitoring_Run2_Final,  have been updated, close PicoScope 6 and Excel and be sure that the bi-directional coupler is re-attached in the system setup.
